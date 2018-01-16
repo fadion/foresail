@@ -1,0 +1,120 @@
+.form-section {
+  &--inline {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .form-label {
+      margin-bottom: 0;
+    }
+  }
+
+  &--separator {
+    border-bottom: 1px solid #ececec;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+  }
+}
+
+.form-label {
+  display: inline-block;
+  margin-bottom: 10px;
+  color: #8b8b8b;
+}
+
+.form-control {
+  display: inline-block;
+  background: white;
+  border: 1px solid #c2c2c2;
+  color: #8b8b8b;
+  padding: 5px;
+  font-size: 16px;
+
+  &::-webkit-input-placeholder {
+    color: #ccc;
+  }
+
+  &--small {
+    width: 25%;
+  }
+
+  &--medium {
+    width: 50%;
+  }
+
+  &--big {
+    width: 75%;
+  }
+
+  &--full {
+    width: 100%;
+  }
+}
+
+.form-checkbox {
+  -webkit-appearance: none;
+  width: 36px;
+  height: 18px;
+  background: #c2c2c2;
+  position: relative;
+  transition: background .2s;
+  border: none;
+
+  &:checked {
+    background: #387dcb;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 13px;
+    height: 12px;
+    background: white;
+    transition: left .2s;
+  }
+
+  &:disabled {
+    opacity: 0.3;
+  }
+
+  &:focus:checked:not(:disabled)::after,
+  &:checked::after {
+    left: 19px;
+  }
+}
+
+.form-buttons {
+  display: flex;
+
+  .form-button {
+    width: 50%;
+
+    &:last-child {
+      margin-left: 20px;
+    }
+  }
+}
+
+.form-button {
+  font-size: 16px;
+  border: 0;
+  text-align: center;
+  padding: 10px 20px;
+
+  &--save {
+    background: #6bee8e;
+    color: white;
+  }
+
+  &--cancel {
+    background: #dbdbdb;
+    color: #acacac;
+  }
+
+  &--destroy {
+    background: #e15d5d;
+    color: white;
+  }
+}

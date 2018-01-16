@@ -43,7 +43,7 @@
        :class="{ 'imageBox--withSpots': hasSpots }"
        :style="'border-top-color:' + color"
        @mousedown.self.left="mousedown"
-       @click.left="click"
+       @dblclick.left="click"
   >
     <div class="imageBox-info">
       <img :src="imagePath" class="imageBox-logo">

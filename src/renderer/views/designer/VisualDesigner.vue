@@ -2,8 +2,9 @@
   import {mapState} from 'vuex'
   import * as types from '../../store/types'
   import PathBuilder from '../../services/PathBuilder'
-  import Box from './Box'
   import Draggable from '../../services/Draggable'
+  import Box from './Box'
+  import Settings from './Settings'
 
   export default {
     name: 'visual-designer',
@@ -16,7 +17,8 @@
         targetBox: null,
         isDragging: false,
         draggable: null,
-        pathBuilder: null
+        pathBuilder: null,
+        showSettings: false
       }
     },
 
@@ -85,7 +87,11 @@
       },
 
       boxClicked() {
-        // to be impemented
+        this.showSettings = true
+      },
+
+      hideSettings() {
+        this.showSettings = false
       }
     },
 
@@ -119,7 +125,7 @@
 
     dependencies: ['layoutManager'],
 
-    components: { Box }
+    components: { Box, Settings }
   }
 </script>
 
@@ -136,6 +142,7 @@
          @mousedown="boxDragStarted(item, $event)"
          @click="boxClicked(item)"
     ></box>
+    <settings v-if="showSettings" @hideSettings="hideSettings"></settings>
   </div>
 </template>
 

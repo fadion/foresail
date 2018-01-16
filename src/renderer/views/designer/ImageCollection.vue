@@ -82,8 +82,9 @@
         if (this.isDragging) {
           this.draggable.ended((item, pos) => {
             // Add to the original data the current position
-            // of the box. That way it can correctly be placed
-            // in the container.
+            // of the box and a unique identifier. The box is
+            // cloned, otherwise these changes will be passed
+            // to the original reference.
             let box = Object.assign({}, this.boxData)
             box.id = Math.random()
             box.x = pos.x

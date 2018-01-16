@@ -35,6 +35,7 @@
     font-size: 18px;
     position: relative;
     padding: 10px 0;
+    z-index: 10;
   }
 
   .mainNav-back {

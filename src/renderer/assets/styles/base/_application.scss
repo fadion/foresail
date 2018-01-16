@@ -12,9 +12,16 @@
     cursor: default;
   }
 
-  // Except input fields.
-  input {
+  // Except inputs.
+  input, button, a {
     cursor: text;
+  }
+
+  input[type="checkbox"],
+  input[type="radio"],
+  button,
+  a {
+    cursor: pointer;
   }
 }
 
