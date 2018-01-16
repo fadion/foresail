@@ -4,6 +4,10 @@ export default class LayoutManager {
     this.paths = []
   }
 
+  setBoxes(boxes) {
+    this.boxes = boxes
+  }
+
   addBox(box) {
     this.boxes.push(box)
   }
@@ -27,11 +31,14 @@ export default class LayoutManager {
   }
 
   endBoxPath(box) {
-    return this.paths.reverse().find(path => path.endBox === box)
+    return this.paths.reverse().find(path => path.endBox.dataset.id === box.dataset.id)
   }
 
   boxPaths(box) {
-    return this.paths.filter(path => path.startBox === box || path.endBox === box)
+    return this.paths.filter(path => {
+      return path.startBox.dataset.id === box.dataset.id
+        || path.endBox.dataset.id === box.dataset.id
+    })
   }
 
   removePath(path) {
@@ -39,13 +46,15 @@ export default class LayoutManager {
   }
 
   _boxExists(box) {
-    return this.boxes.includes(box)
+    return this.boxes.some(b => b.dataset.id === box.dataset.id)
   }
 
   _boxesAreConnected(first, second) {
     return this.paths.some(path => {
-      return (path.startBox === first || path.endBox === first)
-          && (path.startBox === second || path.endBox === second)
+      return (path.startBox.dataset.id === first.dataset.id
+          || path.endBox.dataset.id === first.dataset.id)
+        && (path.startBox.dataset.id === second.dataset.id
+          || path.endBox.dataset.id === second.dataset.id)
     })
   }
 }

@@ -65,6 +65,8 @@
       boxDragMoved(event) {
         if (this.isDragging) {
           this.draggable.moved(event, (item) => {
+            // Paths connected to the specific box are
+            // redrawn once it moves.
             this.pathBuilder.redraw(item)
           })
         }
@@ -73,6 +75,8 @@
       boxDragEnded() {
         if (this.isDragging) {
           this.draggable.ended((el, pos) => {
+            // Trigger an update in the store, so the new box
+            // position can be reflected in the UI.
             this.$store.commit(types.UPDATE_BOX_POSITION, { id: this.targetBox.id, pos })
           })
 
@@ -97,6 +101,14 @@
       this.pathBuilder = new PathBuilder(this.layoutManager)
     },
 
+    updated() {
+      // Repopulate the box array on the LayoutManager with
+      // the changes on the UI every time the component is
+      // updated.
+      let boxes = this.$refs.visualDesigner.querySelectorAll('.imageBox')
+      this.layoutManager.setBoxes(Array.from(boxes))
+    },
+
     destroyed() {
       window.removeEventListener('mousemove', this.grabMoved)
       window.removeEventListener('mousemove', this.grabMoved)
@@ -112,14 +124,14 @@
 </script>
 
 <template>
-  <div class="visualDesigner" @mousedown.left="grabStarted">
+  <div class="visualDesigner" ref="visualDesigner" @mousedown.left="grabStarted">
     <div class="visualDesigner-inner"></div>
-    <box v-for="item in boxes"
+    <box v-for="item in boxes" :data-id="item.id"
          :has-spots="true"
          :logo="item.logo"
          :version="item.version"
          :color="item.color"
-         :key="Math.random()"
+         :key="item.id"
          :style="{ top: `${item.y}px`, left: `${item.x}px` }"
          @mousedown="boxDragStarted(item, $event)"
          @click="boxClicked(item)"
@@ -146,7 +158,7 @@
 
       // The svg element is rendered to fill the whole
       // container, so that paths can be easily placed
-      // without complicated calcualtions.
+      // without complicated calculations.
       svg {
         top: 0;
         left: 0;
