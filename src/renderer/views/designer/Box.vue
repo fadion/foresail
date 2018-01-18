@@ -32,7 +32,7 @@
         this.$emit('mousedown', event)
       },
       click(event) {
-        this.$emit('click', event)
+        this.$emit('dblclick', event)
       }
     }
   }

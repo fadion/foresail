@@ -14,11 +14,12 @@
         isGrabbing: false,
         grabTarget: null,
         grabOffset: { x: 0, y: 0 },
-        targetBox: null,
+        targetDragBox: null,
         isDragging: false,
         draggable: null,
         pathBuilder: null,
-        showSettings: false
+        showSettings: false,
+        selectedBox: null
       }
     },
 
@@ -59,8 +60,10 @@
 
       boxDragStarted(box, event) {
         this.isDragging = true
-        this.targetBox = box
-        this.draggable = new Draggable(event.target)
+        this.targetDragBox = box
+        this.draggable = new Draggable(event.target, {
+          constraint: true
+        })
         this.draggable.started(event)
       },
 
@@ -79,19 +82,32 @@
           this.draggable.ended((el, pos) => {
             // Trigger an update in the store, so the new box
             // position can be reflected in the UI.
-            this.$store.commit(types.UPDATE_BOX_POSITION, { id: this.targetBox.id, pos })
+            this.$store.commit(types.UPDATE_BOX_POSITION, { id: this.targetDragBox.id, pos })
           })
 
           this.isDragging = false
         }
       },
 
-      boxClicked() {
+      boxClicked(item, event) {
         this.showSettings = true
+        this.selectedBox = event.target
       },
 
       hideSettings() {
+        this.unblurry()
+        this.selectedBox = null
         this.showSettings = false
+      },
+
+      blurry() {
+        this.$refs.visualDesigner.classList.add('blurry')
+        this.selectedBox.classList.add('is-active')
+      },
+
+      unblurry() {
+        this.$refs.visualDesigner.classList.remove('blurry')
+        this.selectedBox.classList.remove('is-active')
       }
     },
 
@@ -113,6 +129,13 @@
       // updated.
       let boxes = this.$refs.visualDesigner.querySelectorAll('.imageBox')
       this.layoutManager.setBoxes(Array.from(boxes))
+
+      // This will be checked everytime settings are opened
+      // or a new box is dragged. If one was selected, blurry
+      // the rest.
+      if (this.selectedBox) {
+        this.blurry()
+      }
     },
 
     destroyed() {
@@ -140,7 +163,7 @@
          :key="item.id"
          :style="{ top: `${item.y}px`, left: `${item.x}px` }"
          @mousedown="boxDragStarted(item, $event)"
-         @click="boxClicked(item)"
+         @dblclick="boxClicked(item, $event)"
     ></box>
     <settings v-if="showSettings" @hideSettings="hideSettings"></settings>
   </div>
@@ -152,8 +175,19 @@
     position: relative;
     overflow: scroll;
 
+    &.blurry {
+      // Every imagebox that doesn't have an .is-active
+      // class, and every svg. The .is-active class is
+      // applied programmatically to the selected box.
+      .imageBox:not(.is-active), svg {
+        filter: grayscale(.8) blur(1px);
+        pointer-events: none;
+      }
+    }
+
     .imageBox {
       position: absolute;
+      transition: filter .3s;
     }
 
     // Arbitrary width and height to give the
