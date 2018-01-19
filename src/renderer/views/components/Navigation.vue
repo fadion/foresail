@@ -15,6 +15,20 @@
       return {
         newTitle: this.title
       }
+    },
+
+    methods: {
+      titleClicked(event) {
+        event.target.classList.remove('inactive')
+        event.target.removeAttribute('readonly')
+        // @TODO this is not working
+        event.target.focus()
+      },
+
+      titleBlur(event) {
+        event.target.classList.add('inactive')
+        event.target.setAttribute('readonly', true)
+      }
     }
   }
 </script>
@@ -23,7 +37,7 @@
   <nav class="mainNav">
     <router-link :to="backUrl" class="mainNav-back" v-if="back">{{ back }}</router-link>
     <h1 class="mainNav-title">
-      <input type="text" v-model="newTitle">
+      <input type="text" class="inactive" v-model="newTitle" @click="titleClicked" @blur="titleBlur" readonly>
     </h1>
   </nav>
 </template>
@@ -67,5 +81,12 @@
   .mainNav-title input {
     width: 100%;
     border: 0;
+
+    // Make the input behave like a
+    // normal title.
+    &.inactive {
+      cursor: default;
+      user-select: none;
+    }
   }
 </style>

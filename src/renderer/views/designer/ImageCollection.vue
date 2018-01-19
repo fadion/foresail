@@ -2,18 +2,13 @@
   import {mapState} from 'vuex'
   import * as types from '../../store/types'
   import Box from './Box'
-  import Draggable from '../../services/Draggable'
 
   export default {
     name: 'image-collection',
 
     data() {
       return {
-        searchText: '',
-        isDragging: false,
-        originalTarget: null,
-        boxData: null,
-        draggable: null
+        searchText: ''
       }
     },
 
@@ -39,13 +34,11 @@
           if (item.items) {
             item.items = this.filterBoxes(item.items, text)
           }
-
           // Means it's on a lower-level node, so it checks the item's
           // name against the search text.
           if (item.name) {
             return item.name.toLowerCase().includes(text.toLowerCase())
           }
-
           // Top-level node. Return only the boxes that have at least
           // one item that corresponded to the search text.
           return item.items.length
@@ -59,56 +52,23 @@
         this.$refs.searchInput.blur()
       },
 
-      boxDragStarted(item, event) {
-        this.isDragging = true
-        this.draggable = new Draggable(event.target, {
-          ghost: true,
-          ghostContainer: document.querySelector('.visualDesigner')
-        })
-        this.draggable.started(event)
-        this.originalTarget = event.target
-        this.boxData = item
+      dragEnded(data) {
+        // Add to the original data the current position
+        // of the box and a unique identifier. The box is
+        // cloned, otherwise these changes will be passed
+        // to the original reference.
+        let box = Object.assign({
+          id: Math.random(),
+          x: data.pos.x,
+          y: data.pos.y
+        }, data.payload)
 
-        event.target.classList.add('is-faded')
-      },
-
-      boxDragMoved(event) {
-        if (this.isDragging) {
-          this.draggable.moved(event)
-        }
-      },
-
-      boxDragEnded() {
-        if (this.isDragging) {
-          this.draggable.ended((item, pos) => {
-            // Add to the original data the current position
-            // of the box and a unique identifier. The box is
-            // cloned, otherwise these changes will be passed
-            // to the original reference.
-            let box = Object.assign({}, this.boxData)
-            box.id = Math.random()
-            box.x = pos.x
-            box.y = pos.y
-
-            this.$store.commit(types.ADD_BOX, box)
-          })
-
-          this.isDragging = false
-          this.originalTarget.classList.remove('is-faded')
-        }
+        this.$store.commit(types.ADD_BOX, box)
       }
     },
 
     created() {
       this.$store.dispatch('getAllDefaultBoxes')
-
-      window.addEventListener('mousemove', this.boxDragMoved)
-      window.addEventListener('mouseup', this.boxDragEnded)
-    },
-
-    destroyed() {
-      window.removeEventListener('mousemove', this.boxDragMoved)
-      window.removeEventListener('mouseup', this.boxDragEnded)
     },
 
     components: { Box }
@@ -126,12 +86,12 @@
 
     <div class="imageCollection-section" v-for="box in filteredBoxes" :key="box.section">
       <h3 class="imageCollection-sectionTitle">{{ box.section }}</h3>
-      <box v-for="item in box.items"
+      <box v-for="item in box.items" v-draggable="{ ghost: true, ghostContainer: '.visualDesigner', payload: item }"
            :logo="item.logo"
            :version="item.version"
            :color="item.color"
            :key="item.name + item.version"
-           @mousedown.left.native="boxDragStarted(item, $event)"
+           @dragEnded="dragEnded"
       ></box>
     </div>
 

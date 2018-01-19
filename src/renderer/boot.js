@@ -3,6 +3,8 @@ import VueRouter from 'vue-router'
 import injector from 'vue-inject'
 import routes from './routes'
 import store from './store'
+import './directives/draggable'
+import './directives/grabbable'
 import './services'
 import './assets/styles/main.scss'
 

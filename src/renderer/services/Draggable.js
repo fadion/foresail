@@ -13,6 +13,7 @@ export default class Draggable {
       this.options.ghost = false
     }
 
+    this.options.ghostContainer = document.querySelector(this.options.ghostContainer)
     this.element = element
     this.draggingBox = null
   }
@@ -23,6 +24,10 @@ export default class Draggable {
     this.offset = {
       x: event.clientX - this.draggingBox.offsetLeft,
       y: event.clientY - this.draggingBox.offsetTop
+    }
+
+    if (this.options.ghost) {
+      this.element.classList.add('is-faded')
     }
   }
 
@@ -54,6 +59,8 @@ export default class Draggable {
     let element = this.draggingBox
 
     if (this.options.ghost) {
+      this.element.classList.remove('is-faded')
+
       // Remove ghost if it's out of bounds from the expecting container.
       if (this.draggingBox.offsetLeft < this.options.ghostContainer.offsetLeft ||
         this.draggingBox.offsetTop < this.options.ghostContainer.offsetTop
@@ -91,6 +98,7 @@ export default class Draggable {
     ghost.style.position = 'absolute'
     ghost.style.left = `${element.offsetLeft}px`
     ghost.style.top = `${element.offsetTop}px`
+    ghost.style.zIndex = 100
 
     // Add it to the body, so it can naturally move everywhere and
     // have it's positioning easier to handle.

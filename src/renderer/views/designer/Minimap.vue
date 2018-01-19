@@ -35,8 +35,6 @@
 
     methods: {
       buildBoxes() {
-        console.log(typeof this.container)
-
         this.minimapBoxes = []
 
         // It takes the ratio between the minimap and the viewport as a

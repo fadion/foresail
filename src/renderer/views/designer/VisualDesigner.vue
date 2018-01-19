@@ -2,7 +2,6 @@
   import {mapState} from 'vuex'
   import * as types from '../../store/types'
   import PathBuilder from '../../services/PathBuilder'
-  import Draggable from '../../services/Draggable'
   import Box from './Box'
   import Settings from './Settings'
   import Minimap from './Minimap'
@@ -12,15 +11,9 @@
 
     data() {
       return {
-        isGrabbing: false,
-        grabTarget: null,
-        grabOffset: { x: 0, y: 0 },
-        targetDragBox: null,
-        isDragging: false,
-        draggable: null,
-        pathBuilder: null,
         showSettings: false,
-        selectedBox: null
+        selectedBox: null,
+        pathBuilder: null
       }
     },
 
@@ -31,65 +24,6 @@
     },
 
     methods: {
-      grabStarted(event) {
-        this.isGrabbing = true
-        this.grabTarget = event.target
-        this.grabOffset = { x: event.clientX, y: event.clientY }
-
-        event.target.classList.add('is-grabbing')
-      },
-
-      grabMoved(event) {
-        if (this.isGrabbing) {
-          // Scroll the element by adding the amount that the
-          // mouse moved.
-          this.grabTarget.scrollLeft += this.grabOffset.x - event.clientX
-          this.grabTarget.scrollTop += this.grabOffset.y - event.clientY
-
-          // Reset the offset to the current position, so mouse move
-          // difference can be as small as possible.
-          this.grabOffset = { x: event.clientX, y: event.clientY }
-        }
-      },
-
-      grabEnded() {
-        if (this.isGrabbing) {
-          this.isGrabbing = false
-          this.grabTarget.classList.remove('is-grabbing')
-        }
-      },
-
-      boxDragStarted(box, event) {
-        this.isDragging = true
-        this.targetDragBox = box
-        this.draggable = new Draggable(event.target, {
-          constraint: true
-        })
-        this.draggable.started(event)
-      },
-
-      boxDragMoved(event) {
-        if (this.isDragging) {
-          this.draggable.moved(event, (item) => {
-            // Paths connected to the specific box are
-            // redrawn once it moves.
-            this.pathBuilder.redraw(item)
-          })
-        }
-      },
-
-      boxDragEnded() {
-        if (this.isDragging) {
-          this.draggable.ended((el, pos) => {
-            // Trigger an update in the store, so the new box
-            // position can be reflected in the UI.
-            this.$store.commit(types.UPDATE_BOX_POSITION, { id: this.targetDragBox.id, pos })
-          })
-
-          this.isDragging = false
-        }
-      },
-
       boxClicked(item, event) {
         this.showSettings = true
         this.selectedBox = event.target
@@ -109,15 +43,20 @@
       unblurry() {
         this.$refs.visualDesigner.classList.remove('blurry')
         this.selectedBox.classList.remove('is-active')
+      },
+
+      dragMoved(data) {
+        this.pathBuilder.redraw(data.item)
+      },
+
+      dragEnded(data) {
+        // Trigger an update in the store, so the new box
+        // position can be reflected in the UI.
+        this.$store.commit(types.UPDATE_BOX_POSITION, {
+          id: Number.parseFloat(data.el.dataset.id),
+          pos: data.pos
+        })
       }
-    },
-
-    created() {
-      window.addEventListener('mousemove', this.grabMoved)
-      window.addEventListener('mousemove', this.boxDragMoved)
-
-      window.addEventListener('mouseup', this.grabEnded)
-      window.addEventListener('mouseup', this.boxDragEnded)
     },
 
     mounted() {
@@ -139,14 +78,6 @@
       }
     },
 
-    destroyed() {
-      window.removeEventListener('mousemove', this.grabMoved)
-      window.removeEventListener('mousemove', this.grabMoved)
-
-      window.removeEventListener('mouseup', this.boxDragMoved)
-      window.removeEventListener('mouseup', this.boxDragEnded)
-    },
-
     dependencies: ['layoutManager'],
 
     components: { Box, Settings, Minimap }
@@ -154,16 +85,18 @@
 </script>
 
 <template>
-  <div class="visualDesigner" ref="visualDesigner" @mousedown.left="grabStarted" @mousewheel.prevent>
+  <div class="visualDesigner" ref="visualDesigner" v-grabbable @mousewheel.prevent>
     <div class="visualDesigner-inner"></div>
-    <box v-for="item in boxes" :data-id="item.id"
+    <box v-for="item in boxes" v-draggable="{ constraint: true }"
+         :data-id="item.id"
          :has-spots="true"
          :logo="item.logo"
          :version="item.version"
          :color="item.color"
          :key="item.id"
          :style="{ top: `${item.y}px`, left: `${item.x}px` }"
-         @mousedown.self.left.native="boxDragStarted(item, $event)"
+         @dragMoved="dragMoved"
+         @dragEnded="dragEnded"
          @dblclick.left.native="boxClicked(item, $event)"
     ></box>
     <minimap></minimap>
