@@ -72,9 +72,9 @@ export default class Draggable {
       } else {
         position = {
           x: this.draggingBox.offsetLeft - this.options.ghostContainer.offsetLeft
-            + this.options.ghostContainer.scrollLeft,
+          + this.options.ghostContainer.scrollLeft,
           y: this.draggingBox.offsetTop - this.options.ghostContainer.offsetTop
-            + this.options.ghostContainer.scrollTop
+          + this.options.ghostContainer.scrollTop
         }
         this.draggingBox.remove()
       }
@@ -120,7 +120,7 @@ export default class Draggable {
     // too fast.
     let duration = 100 + Math.abs(diff.x) * 0.2 + Math.abs(diff.y) * 0.2
 
-    animate(duration, progress => {
+    animate(progress => {
       element.style.left = `${Math.round(start.x - diff.x * progress)}px`
       element.style.top = `${Math.round(start.y - diff.y * progress)}px`
       // Progress is a 0.0 - 1.0 float and so is opacity. Substract from 1 to
@@ -128,6 +128,6 @@ export default class Draggable {
       element.style.opacity = 1 - progress * 1.5
     }, () => {
       element.remove()
-    })
+    }, duration)
   }
 }

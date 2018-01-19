@@ -161,9 +161,9 @@ export default class PathBuilder {
     // center it. Add mulltiplier to count the CSS scaling too.
     return {
       x: element.getBoundingClientRect().left - this.container.getBoundingClientRect().left
-        + element.offsetWidth * multiplier / 2,
+      + element.offsetWidth * multiplier / 2,
       y: element.getBoundingClientRect().top - this.container.getBoundingClientRect().top
-        + element.offsetHeight * multiplier / 2
+      + element.offsetHeight * multiplier / 2
     }
   }
 
@@ -178,7 +178,7 @@ export default class PathBuilder {
     }
     let duration = 100 + Math.abs(diff.x) * 0.1 + Math.abs(diff.y) * 0.1
 
-    animate(duration, progress => {
+    animate(progress => {
       let pathEnd = {
         x: this.pathEnd.x - diff.x * progress,
         y: this.pathEnd.y - diff.y * progress
@@ -199,6 +199,6 @@ export default class PathBuilder {
       element.setAttribute('d', pathAttr)
     }, () => {
       element.remove()
-    })
+    }, duration)
   }
 }

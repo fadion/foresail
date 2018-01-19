@@ -1,5 +1,5 @@
 // Based on: https://stackoverflow.com/a/39494245
-export default function animate(duration, onStep, onFinish) {
+export default function animate(onStep, onFinish, duration) {
   let startTime = null
   let step = timestamp => {
     if (!startTime) {
