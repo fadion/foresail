@@ -16,11 +16,11 @@
 
 <template>
   <div class="u-100height">
-    <navigation title="Event Lab" back="Projects" back-url="/projects"></navigation>
+    <navigation title="Event Lab" back="Projects" back-url="/projects"/>
 
     <div class="designer">
-      <image-collection></image-collection>
-      <visual-designer></visual-designer>
+      <image-collection/>
+      <visual-designer/>
     </div>
   </div>
 </template>

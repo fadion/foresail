@@ -98,9 +98,9 @@
          @dragMoved="dragMoved"
          @dragEnded="dragEnded"
          @dblclick.left.native="boxClicked(item, $event)"
-    ></box>
-    <minimap></minimap>
-    <settings v-if="showSettings" @hideSettings="hideSettings"></settings>
+    />
+    <minimap/>
+    <settings v-if="showSettings" @hideSettings="hideSettings"/>
   </div>
 </template>
 

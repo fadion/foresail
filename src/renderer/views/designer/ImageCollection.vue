@@ -92,7 +92,7 @@
            :color="item.color"
            :key="item.name + item.version"
            @dragEnded="dragEnded"
-      ></box>
+      />
     </div>
 
     <div class="imageCollection-noResults" v-if="!filteredBoxes.length">No boxes found</div>
