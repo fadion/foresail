@@ -25,26 +25,12 @@
       imagePath() {
         return require(`../../assets/images/${this.logo}`)
       }
-    },
-
-    methods: {
-      mousedown(event) {
-        this.$emit('mousedown', event)
-      },
-      click(event) {
-        this.$emit('dblclick', event)
-      }
     }
   }
 </script>
 
 <template>
-  <div class="imageBox"
-       :class="{ 'imageBox--withSpots': hasSpots }"
-       :style="'border-top-color:' + color"
-       @mousedown.self.left="mousedown"
-       @dblclick.left="click"
-  >
+  <div class="imageBox" :class="{ 'imageBox--withSpots': hasSpots }" :style="'border-top-color:' + color">
     <div class="imageBox-info">
       <img :src="imagePath" class="imageBox-logo">
       <span class="imageBox-version">{{ version }}</span>

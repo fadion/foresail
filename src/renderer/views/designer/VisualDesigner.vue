@@ -5,6 +5,7 @@
   import Draggable from '../../services/Draggable'
   import Box from './Box'
   import Settings from './Settings'
+  import Minimap from './Minimap'
 
   export default {
     name: 'visual-designer',
@@ -148,12 +149,12 @@
 
     dependencies: ['layoutManager'],
 
-    components: { Box, Settings }
+    components: { Box, Settings, Minimap }
   }
 </script>
 
 <template>
-  <div class="visualDesigner" ref="visualDesigner" @mousedown.left="grabStarted">
+  <div class="visualDesigner" ref="visualDesigner" @mousedown.left="grabStarted" @mousewheel.prevent>
     <div class="visualDesigner-inner"></div>
     <box v-for="item in boxes" :data-id="item.id"
          :has-spots="true"
@@ -162,9 +163,10 @@
          :color="item.color"
          :key="item.id"
          :style="{ top: `${item.y}px`, left: `${item.x}px` }"
-         @mousedown="boxDragStarted(item, $event)"
-         @dblclick="boxClicked(item, $event)"
+         @mousedown.self.left.native="boxDragStarted(item, $event)"
+         @dblclick.left.native="boxClicked(item, $event)"
     ></box>
+    <minimap></minimap>
     <settings v-if="showSettings" @hideSettings="hideSettings"></settings>
   </div>
 </template>
@@ -175,19 +177,28 @@
     position: relative;
     overflow: scroll;
 
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
     &.blurry {
       // Every imagebox that doesn't have an .is-active
       // class, and every svg. The .is-active class is
       // applied programmatically to the selected box.
       .imageBox:not(.is-active), svg {
         filter: grayscale(.8) blur(1px);
+        opacity: .8;
         pointer-events: none;
       }
     }
 
     .imageBox {
       position: absolute;
-      transition: filter .3s;
+      transition: filter .3s, box-shadow 1s;
+
+      &.is-active {
+        box-shadow: 0 0 40px rgba(0, 0, 0, .15);
+      }
     }
 
     // Arbitrary width and height to give the

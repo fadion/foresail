@@ -131,7 +131,7 @@
            :version="item.version"
            :color="item.color"
            :key="item.name + item.version"
-           @mousedown="boxDragStarted(item, $event)"
+           @mousedown.left.native="boxDragStarted(item, $event)"
       ></box>
     </div>
 
