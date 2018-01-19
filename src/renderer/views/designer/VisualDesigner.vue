@@ -99,7 +99,7 @@
          @dragEnded="dragEnded"
          @dblclick.left.native="boxClicked(item, $event)"
     />
-    <minimap/>
+    <minimap v-if="boxes.length"/>
     <settings v-if="showSettings" @hideSettings="hideSettings"/>
   </div>
 </template>
