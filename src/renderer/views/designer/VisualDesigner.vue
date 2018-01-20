@@ -63,10 +63,12 @@
     mounted() {
       this.pathBuilder = new PathBuilder(this.layoutManager)
 
-      this.dimensions.width = this.$refs.visualDesigner.offsetWidth
-      this.dimensions.height = this.$refs.visualDesigner.offsetHeight
-      this.dimensions.scrollLeft = this.$refs.visualDesigner.scrollLeft
-      this.dimensions.scrollTop = this.$refs.visualDesigner.scrollTop
+      this.dimensions = {
+        width: this.$refs.visualDesigner.offsetWidth,
+        height: this.$refs.visualDesigner.offsetHeight,
+        scrollLeft: this.$refs.visualDesigner.scrollLeft,
+        scrollTop: this.$refs.visualDesigner.scrollTop
+      }
     },
 
     updated() {

@@ -9,8 +9,9 @@
         minimapBoxes: [],
         viewport: { width: 0, height: 0, x: 0, y: 0 },
         baseBox: { width: 200, height: 70 },
-        minimapSize: { width: 150, height: 70 },
-        ratio: { x: 0, y: 0 }
+        minimapSize: { width: 130, height: 60 },
+        ratio: { x: 0, y: 0 },
+        scale: { width: 0, height: 0 }
       }
     },
 
@@ -30,8 +31,15 @@
     watch: {
       boxes: {
         handler() {
+          this.defineScale()
           this.defineRatio()
           this.buildBoxes()
+          this.buildViewport()
+        },
+        deep: true
+      },
+      container: {
+        handler() {
           this.buildViewport()
         },
         deep: true
@@ -62,20 +70,32 @@
       },
 
       buildViewport() {
+        // X and Y coordinates of the rightmost and the very
+        // bottom box.
+        let max = {
+          x: Math.max(this.scale.width - this.container.width, 0),
+          y: Math.max(this.scale.height - this.container.height, 0)
+        }
+
         this.viewport.width = this.ratio.x * this.minimapSize.width
         this.viewport.height = this.ratio.y * this.minimapSize.height
-        this.viewport.x = this.ratio.x * this.minimapSize.width / this.container.scrollLeft
-        this.viewport.y = this.ratio.y * this.minimapSize.height / this.container.scrollTop
+
+        // When the scroll is within the rightmost box boundaries, it is
+        // that value that's used for the calculation. Otherwise, cap it
+        // at the rightmost coordinate.
+        this.viewport.x = this.viewport.width / this.container.width
+          * Math.min(this.container.scrollLeft, max.x)
+
+        this.viewport.y = this.viewport.height / this.container.height
+          * Math.min(this.container.scrollTop, max.y)
       },
 
       defineRatio() {
-        let scale = this.defineScale()
-
         // X and Y ratios between the visible dimensions and the maximum
         // width and height of the laid out boxes. Capped to 1 to keep
         // the calculations within the visible viewport.
-        this.ratio.x = Math.min(this.container.width / scale.x, 1)
-        this.ratio.y = Math.min(this.container.height / scale.y, 1)
+        this.ratio.x = Math.min(this.container.width / this.scale.width, 1)
+        this.ratio.y = Math.min(this.container.height / this.scale.height, 1)
       },
 
       defineScale() {
@@ -86,7 +106,7 @@
         boxes.sort((a, b) => {
           return a.x - b.x
         })
-        // As the X coordinate starts at the beggining of the box,
+        // As the X coordinate starts at the beginning of the box,
         // add the width.
         let width = boxes[boxes.length - 1].x + this.baseBox.width
 
@@ -96,7 +116,7 @@
         })
         let height = boxes[boxes.length - 1].y + this.baseBox.height
 
-        return { x: width, y: height }
+        this.scale = { width, height }
       }
     }
   }
@@ -128,8 +148,8 @@
     position: fixed;
     bottom: 20px;
     right: 20px;
-    width: 150px;
-    height: 70px;
+    width: 130px;
+    height: 60px;
     background: #eef1f6;
     outline: 1px solid #d9dee8;
   }
@@ -137,7 +157,7 @@
   .minimap-viewport {
     position: absolute;
     outline: 1px solid #c1c9db;
-    background: rgba(151, 164, 191, .05);
+    background: rgba(151, 164, 191, .07);
   }
 
   .minimap-box {
