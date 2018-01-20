@@ -1,5 +1,6 @@
 <script>
   import {mapState} from 'vuex'
+  import Position from '../../utils/position'
 
   export default {
     name: 'minimap',
@@ -99,24 +100,10 @@
       },
 
       defineScale() {
-        let boxes = Object.assign([], this.boxes)
-
-        // Sort Obj.x on ascending order, so the last element of
-        // the array is the rightmost box on the X axis.
-        boxes.sort((a, b) => {
-          return a.x - b.x
-        })
-        // As the X coordinate starts at the beginning of the box,
-        // add the width.
-        let width = boxes[boxes.length - 1].x + this.baseBox.width
-
-        // Same but for thhe Y axis.
-        boxes.sort((a, b) => {
-          return a.y - b.y
-        })
-        let height = boxes[boxes.length - 1].y + this.baseBox.height
-
-        this.scale = { width, height }
+        this.scale = {
+          width: Position.max(this.boxes, 'x') + this.baseBox.width,
+          height: Position.max(this.boxes, 'y') + this.baseBox.height
+        }
       }
     }
   }
