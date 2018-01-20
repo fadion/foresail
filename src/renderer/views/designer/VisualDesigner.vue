@@ -14,6 +14,7 @@
       return {
         showSettings: false,
         selectedBox: null,
+        selectedTarget: null,
         dimensions: { width: 0, height: 0, scrollLeft: 0, scrollTop: 0},
         pathBuilder: null
       }
@@ -27,24 +28,30 @@
 
     methods: {
       boxClicked(item, event) {
+        this.selectedBox = item
         this.showSettings = true
-        this.selectedBox = event.target
+        this.selectedTarget = event.target
       },
 
       hideSettings() {
         this.unblurry()
-        this.selectedBox = null
+        this.selectedTarget = null
         this.showSettings = false
+      },
+
+      deleteBox() {
+        this.$store.commit(types.DELETE_BOX, { id: this.selectedBox.id })
+        this.hideSettings()
       },
 
       blurry() {
         this.$refs.visualDesigner.classList.add('blurry')
-        this.selectedBox.classList.add('is-active')
+        this.selectedTarget.classList.add('is-active')
       },
 
       unblurry() {
         this.$refs.visualDesigner.classList.remove('blurry')
-        this.selectedBox.classList.remove('is-active')
+        this.selectedTarget.classList.remove('is-active')
       },
 
       dragMoved(el) {
@@ -115,7 +122,7 @@
       // This will be checked everytime settings are opened
       // or a new box is dragged. If one was selected, blurry
       // the rest.
-      if (this.selectedBox) {
+      if (this.selectedTarget) {
         this.blurry()
       }
     },
@@ -140,7 +147,7 @@
          @dblclick.left.native="boxClicked(item, $event)"
     />
     <minimap :container="dimensions"/>
-    <settings v-if="showSettings" @hideSettings="hideSettings"/>
+    <settings v-if="showSettings" @hideSettings="hideSettings" @deleteBox="deleteBox"/>
   </div>
 </template>
 

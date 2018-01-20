@@ -5,6 +5,10 @@
     methods: {
       cancelClicked() {
         this.$emit('hideSettings')
+      },
+
+      destroyClicked() {
+        this.$emit('deleteBox')
       }
     }
   }
@@ -45,7 +49,7 @@
         <button class="form-button form-button--cancel" @click.left="cancelClicked">Cancel</button>
       </div>
 
-      <button class="form-button form-button--destroy u-100width u-mt100">Destroy Image</button>
+      <button class="form-button form-button--destroy u-100width u-mt100" @click.left="destroyClicked">Destroy Image</button>
     </div>
   </transition>
 </template>
