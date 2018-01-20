@@ -38,6 +38,10 @@ module.exports = {
     "no-restricted-syntax": 0,
     "object-curly-spacing": 0,
     "no-trailing-spaces": 0,
+    "max-len": [
+      "error",
+      { "code": 120 }
+    ],
 
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0
