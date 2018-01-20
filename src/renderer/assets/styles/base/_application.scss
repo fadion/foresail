@@ -1,29 +1,7 @@
 .application {
   height: 100%;
-  user-select: none;
   overflow: hidden;
-  // A simple fade in animation when the body is
-  // rendered gives a better feel.
   animation: fadeIn .5s;
-
-  // Every element, including text, shows the
-  // default cursor to better give the illusion
-  // of a native app.
-  * {
-    cursor: default;
-  }
-
-  // Except inputs.
-  input, button, a {
-    cursor: text;
-  }
-
-  input[type="checkbox"],
-  input[type="radio"],
-  button,
-  a {
-    cursor: pointer;
-  }
 }
 
 @keyframes fadeIn {

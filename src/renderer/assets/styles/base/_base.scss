@@ -10,24 +10,31 @@ body {
   margin: 0;
   padding: 0;
   overflow: hidden;
+  cursor: default;
+  user-select: none;
 }
 
 html, body {
   height: 100%;
 }
 
-a {
-  text-decoration: underline;
-  transition: color .3s;
-}
-
-h1, h2, h3,
-h4, h5, h6 {
-  font-weight: bold;
+input, textarea {
+  cursor: text;
 }
 
 input:focus,
 textarea:focus,
 button:focus {
   outline: 0;
+}
+
+input[type="checkbox"],
+input[type="radio"],
+button,
+a {
+  cursor: pointer;
+}
+
+a, img {
+  -webkit-user-drag: none;
 }
