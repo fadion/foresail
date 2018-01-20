@@ -52,16 +52,16 @@
         this.$refs.searchInput.blur()
       },
 
-      dragEnded(data) {
+      dragEnded(el, pos, payload) {
         // Add to the original data the current position
         // of the box and a unique identifier. The box is
         // cloned, otherwise these changes will be passed
         // to the original reference.
         let box = Object.assign({
           id: Math.random(),
-          x: data.pos.x,
-          y: data.pos.y
-        }, data.payload)
+          x: pos.x,
+          y: pos.y
+        }, payload)
 
         this.$store.commit(types.ADD_BOX, box)
       }
@@ -86,12 +86,11 @@
 
     <div class="imageCollection-section" v-for="box in filteredBoxes" :key="box.section">
       <h3 class="imageCollection-sectionTitle">{{ box.section }}</h3>
-      <box v-for="item in box.items" v-draggable="{ ghost: true, ghostContainer: '.visualDesigner', payload: item }"
+      <box v-for="item in box.items" v-draggable="{ ghost: true, ghostContainer: '.visualDesigner', onEnd: dragEnded, payload: item }"
            :logo="item.logo"
            :version="item.version"
            :color="item.color"
            :key="item.name + item.version"
-           @dragEnded="dragEnded"
       />
     </div>
 

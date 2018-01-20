@@ -8,10 +8,16 @@
       return {
         minimapBoxes: [],
         viewport: { width: 0, height: 0, x: 0, y: 0 },
-        canvas: { width: 0, height: 0 },
         baseBox: { width: 200, height: 70 },
         minimapSize: { width: 150, height: 70 },
         ratio: { x: 0, y: 0 }
+      }
+    },
+
+    props: {
+      container: {
+        type: Object,
+        required: true
       }
     },
 
@@ -24,7 +30,6 @@
     watch: {
       boxes: {
         handler() {
-          this.canvasSize()
           this.defineRatio()
           this.buildBoxes()
           this.buildViewport()
@@ -41,8 +46,8 @@
         // scaling factor, multiplying the max dimensions ratio for further
         // shrinking.
         let ratio = {
-          x: this.minimapSize.width / this.canvas.width * this.ratio.x,
-          y: this.minimapSize.height / this.canvas.height * this.ratio.y
+          x: this.minimapSize.width / this.container.width * this.ratio.x,
+          y: this.minimapSize.height / this.container.height * this.ratio.y
         }
 
         this.boxes.forEach(box => {
@@ -59,12 +64,8 @@
       buildViewport() {
         this.viewport.width = this.ratio.x * this.minimapSize.width
         this.viewport.height = this.ratio.y * this.minimapSize.height
-      },
-
-      canvasSize() {
-        // @TODO: Find a way to pass the parent as an HTMLElement prop.
-        this.canvas.width = document.querySelector('.visualDesigner').offsetWidth
-        this.canvas.height = document.querySelector('.visualDesigner').offsetHeight
+        this.viewport.x = this.ratio.x * this.minimapSize.width / this.container.scrollLeft
+        this.viewport.y = this.ratio.y * this.minimapSize.height / this.container.scrollTop
       },
 
       defineRatio() {
@@ -73,8 +74,8 @@
         // X and Y ratios between the visible dimensions and the maximum
         // width and height of the laid out boxes. Capped to 1 to keep
         // the calculations within the visible viewport.
-        this.ratio.x = Math.min(this.canvas.width / scale.x, 1)
-        this.ratio.y = Math.min(this.canvas.height / scale.y, 1)
+        this.ratio.x = Math.min(this.container.width / scale.x, 1)
+        this.ratio.y = Math.min(this.container.height / scale.y, 1)
       },
 
       defineScale() {

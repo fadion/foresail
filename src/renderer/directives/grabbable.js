@@ -1,9 +1,12 @@
 import Vue from 'vue'
 
 Vue.directive('grabbable', {
-  inserted(el) {
+  inserted(el, binding) {
     let isGrabbing = false
     let offset = { x: 0, y: 0 }
+    let options = Object.assign({
+      onEnd: null
+    }, binding.value || {})
 
     let mousedown = event => {
       if (event.target === el) {
@@ -30,6 +33,10 @@ Vue.directive('grabbable', {
       if (isGrabbing) {
         isGrabbing = false
         el.classList.remove('is-grabbing')
+
+        if (typeof options.onEnd === 'function') {
+          options.onEnd()
+        }
       }
     }
 

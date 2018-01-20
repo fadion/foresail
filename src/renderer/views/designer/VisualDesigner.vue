@@ -13,6 +13,7 @@
       return {
         showSettings: false,
         selectedBox: null,
+        dimensions: { width: 0, height: 0, scrollLeft: 0, scrollTop: 0},
         pathBuilder: null
       }
     },
@@ -45,22 +46,27 @@
         this.selectedBox.classList.remove('is-active')
       },
 
-      dragMoved(data) {
-        this.pathBuilder.redraw(data.item)
+      dragMoved(el) {
+        this.pathBuilder.redraw(el)
       },
 
-      dragEnded(data) {
-        // Trigger an update in the store, so the new box
-        // position can be reflected in the UI.
-        this.$store.commit(types.UPDATE_BOX_POSITION, {
-          id: Number.parseFloat(data.el.dataset.id),
-          pos: data.pos
-        })
+      dragEnded(el, pos) {
+        this.$store.commit(types.UPDATE_BOX_POSITION, { id: Number.parseFloat(el.dataset.id), pos })
+      },
+
+      grabEnded() {
+        this.dimensions.scrollLeft = this.$refs.visualDesigner.scrollLeft
+        this.dimensions.scrollTop = this.$refs.visualDesigner.scrollTop
       }
     },
 
     mounted() {
       this.pathBuilder = new PathBuilder(this.layoutManager)
+
+      this.dimensions.width = this.$refs.visualDesigner.offsetWidth
+      this.dimensions.height = this.$refs.visualDesigner.offsetHeight
+      this.dimensions.scrollLeft = this.$refs.visualDesigner.scrollLeft
+      this.dimensions.scrollTop = this.$refs.visualDesigner.scrollTop
     },
 
     updated() {
@@ -85,9 +91,11 @@
 </script>
 
 <template>
-  <div class="visualDesigner" ref="visualDesigner" v-grabbable @mousewheel.prevent>
+  <div class="visualDesigner" ref="visualDesigner" v-grabbable="{ onEnd: grabEnded }"
+       @mousewheel.prevent
+  >
     <div class="visualDesigner-inner"></div>
-    <box v-for="item in boxes" v-draggable="{ constraint: true }"
+    <box v-for="item in boxes" v-draggable="{ constraint: true, onMove: dragMoved, onEnd: dragEnded }"
          :data-id="item.id"
          :has-spots="true"
          :logo="item.logo"
@@ -95,11 +103,9 @@
          :color="item.color"
          :key="item.id"
          :style="{ top: `${item.y}px`, left: `${item.x}px` }"
-         @dragMoved="dragMoved"
-         @dragEnded="dragEnded"
          @dblclick.left.native="boxClicked(item, $event)"
     />
-    <minimap/>
+    <minimap :container="dimensions"/>
     <settings v-if="showSettings" @hideSettings="hideSettings"/>
   </div>
 </template>

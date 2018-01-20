@@ -2,11 +2,17 @@ import Vue from 'vue'
 import Draggable from '../services/Draggable'
 
 Vue.directive('draggable', {
-  inserted(el, binding, vnode) {
+  inserted(el, binding) {
     let isDragging = false
     let draggable = null
-    let options = binding.value || {}
-    let payload = binding.value && binding.value.payload ? binding.value.payload : {}
+    let payload = binding.value && binding.value.payload || {}
+    let options = Object.assign({
+      ghost: false,
+      ghostContainer: null,
+      constraint: false,
+      onMove: null,
+      onEnd: null
+    }, binding.value || {})
 
     let mousedown = event => {
       if (event.target === el) {
@@ -18,8 +24,10 @@ Vue.directive('draggable', {
 
     let mousemove = event => {
       if (isDragging) {
-        draggable.moved(event, item => {
-          vnode.child.$emit('dragMoved', { item })
+        draggable.moved(event, el => {
+          if (typeof options.onMove === 'function') {
+            options.onMove(el)
+          }
         })
       }
     }
@@ -27,7 +35,9 @@ Vue.directive('draggable', {
     let mouseup = () => {
       if (isDragging) {
         draggable.ended((el, pos) => {
-          vnode.child.$emit('dragEnded', { el, pos, payload })
+          if (typeof options.onEnd === 'function') {
+            options.onEnd(el, pos, payload)
+          }
         })
         isDragging = false
       }
