@@ -102,8 +102,8 @@
 </script>
 
 <template>
-  <div class="minimap">
-    <div class="minimap-viewport" v-if="boxes.length"
+  <div class="minimap" v-if="boxes.length">
+    <div class="minimap-viewport"
          :style="{
       width: `${viewport.width}px`,
       height: `${viewport.height}px`,
