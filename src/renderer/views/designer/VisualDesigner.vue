@@ -2,6 +2,7 @@
   import {mapState} from 'vuex'
   import * as types from '../../store/types'
   import PathBuilder from '../../services/PathBuilder'
+  import Position from '../../utils/position'
   import Box from './Box'
   import Settings from './Settings'
   import Minimap from './Minimap'
@@ -57,6 +58,33 @@
       grabEnded() {
         this.dimensions.scrollLeft = this.$refs.visualDesigner.scrollLeft
         this.dimensions.scrollTop = this.$refs.visualDesigner.scrollTop
+      },
+
+      extendScrollArea(boxes) {
+        let last = {
+          x: Position.max(boxes, 'offsetLeft'),
+          y: Position.max(boxes, 'offsetTop')
+        }
+        let canvas = {
+          width: this.$refs.visualDesigner.offsetWidth,
+          height: this.$refs.visualDesigner.offsetHeight
+        }
+        let max = {
+          x: this.$refs.visualInner.offsetWidth - canvas.width / 2,
+          y: this.$refs.visualInner.offsetHeight - canvas.height / 2
+        }
+        let extra = {
+          width: last.x + canvas.width * 0.75,
+          height: last.y + canvas.height * 0.75
+        }
+
+        if (last.x > max.x) {
+          this.$refs.visualInner.style.width = `${extra.width}px`
+        }
+
+        if (last.y > max.y) {
+          this.$refs.visualInner.style.height = `${extra.height}px`
+        }
       }
     },
 
@@ -69,14 +97,20 @@
         scrollLeft: this.$refs.visualDesigner.scrollLeft,
         scrollTop: this.$refs.visualDesigner.scrollTop
       }
+
+      // Make the scrolling area larger than the visible screen.
+      this.$refs.visualInner.style.width = `${this.$refs.visualDesigner.offsetWidth * 1.5}px`
+      this.$refs.visualInner.style.height = `${this.$refs.visualDesigner.offsetHeight * 1.5}px`
     },
 
     updated() {
       // Repopulate the box array on the LayoutManager with
       // the changes on the UI every time the component is
       // updated.
-      let boxes = this.$refs.visualDesigner.querySelectorAll('.imageBox')
-      this.layoutManager.setBoxes(Array.from(boxes))
+      let boxes = Array.from(this.$refs.visualDesigner.querySelectorAll('.imageBox'))
+      this.layoutManager.setBoxes(boxes)
+
+      this.extendScrollArea(boxes)
 
       // This will be checked everytime settings are opened
       // or a new box is dragged. If one was selected, blurry
@@ -93,10 +127,8 @@
 </script>
 
 <template>
-  <div class="visualDesigner" ref="visualDesigner" v-grabbable="{ onEnd: grabEnded }"
-       @mousewheel.prevent
-  >
-    <div class="visualDesigner-inner"></div>
+  <div class="visualDesigner" ref="visualDesigner" v-grabbable="{ onEnd: grabEnded }" @mousewheel.prevent>
+    <div class="visualDesigner-inner" ref="visualInner"></div>
     <box v-for="item in boxes" v-draggable="{ constraint: true, onMove: dragMoved, onEnd: dragEnded }"
          :data-id="item.id"
          :has-spots="true"
@@ -145,8 +177,6 @@
     // Arbitrary width and height to give the
     // user more workspace.
     .visualDesigner-inner {
-      width: 4000px;
-      height: 2000px;
       pointer-events: none;
 
       // The svg element is rendered to fill the whole
