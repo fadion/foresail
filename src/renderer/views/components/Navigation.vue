@@ -50,6 +50,7 @@
     position: relative;
     padding: 10px 0;
     z-index: 10;
+    flex-shrink: 0;
   }
 
   .mainNav-back {

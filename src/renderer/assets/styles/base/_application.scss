@@ -1,6 +1,7 @@
 .application {
-  height: 90%; /* should be 100% */
+  height: 100%;
   user-select: none;
+  overflow: hidden;
   // A simple fade in animation when the body is
   // rendered gives a better feel.
   animation: fadeIn .5s;

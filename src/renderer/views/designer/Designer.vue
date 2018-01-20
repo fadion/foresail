@@ -15,7 +15,7 @@
 </script>
 
 <template>
-  <div class="u-100height">
+  <div class="designerContainer">
     <navigation title="Event Lab" back="Projects" back-url="/projects"/>
 
     <div class="designer">
@@ -26,6 +26,12 @@
 </template>
 
 <style lang="scss">
+  .designerContainer {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
   .designer {
     height: 100%;
     display: flex;
