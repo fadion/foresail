@@ -2,7 +2,6 @@
   import {mapState} from 'vuex'
   import * as types from '../../store/types'
   import Navigation from '../components/Navigation'
-  import Notifications from '../components/Notifications'
   import Project from './Project'
   import Settings from './Settings'
 
@@ -35,7 +34,7 @@
       this.$store.dispatch(types.ALL_PROJECTS)
     },
 
-    components: { Settings, Navigation, Project, Notifications }
+    components: { Settings, Navigation, Project }
   }
 </script>
 
@@ -54,7 +53,6 @@
       </div>
       <settings v-if="selectedProject" :project="selectedProject" @hideSettings="hideSettings"/>
     </div>
-    <notifications/>
   </div>
 </template>
 

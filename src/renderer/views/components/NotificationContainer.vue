@@ -3,7 +3,7 @@
   import Notification from './Notification'
 
   export default {
-    name: 'notifications',
+    name: 'notification-container',
 
     data() {
       return {

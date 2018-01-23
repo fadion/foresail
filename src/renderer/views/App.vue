@@ -1,17 +1,17 @@
 <script>
-  import Notifications from './components/Notifications'
+  import NotificationContainer from './components/NotificationContainer'
 
   export default {
     name: 'app',
 
-    components: { Notifications }
+    components: { NotificationContainer }
   }
 </script>
 
 <template>
   <div class="application">
     <router-view></router-view>
-    <notifications/>
+    <notification-container/>
   </div>
 </template>
 
