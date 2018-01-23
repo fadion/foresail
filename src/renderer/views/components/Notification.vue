@@ -4,6 +4,12 @@
   export default {
     name: 'notification',
 
+    data() {
+      return {
+        timeout: null
+      }
+    },
+
     props: {
       notification: {
         type: Object,
@@ -33,10 +39,18 @@
       if (!this.notification.sticky) {
         let delay = this.notification.delay || 3000
 
-        // @todo glitch when notifications are stacked
-        setTimeout(() => {
+        this.timeout = setTimeout(() => {
           this.remove()
         }, delay)
+      }
+    },
+
+    beforeDestroy() {
+      if (this.timeout) {
+        // Without clearing the timeout, it will stack them
+        // when the component is updated or remounted and
+        // cause unexpected behaviour.
+        clearTimeout(this.timeout)
       }
     }
   }
