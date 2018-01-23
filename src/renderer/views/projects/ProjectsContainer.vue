@@ -50,6 +50,10 @@
                  :color="project.color"
                  @openSettings="openSettings(project)"
         />
+        <div class="projects-empty" v-if="!projects.length">
+          <p>No project added yet.</p>
+          <p>Start building one now by clicking the "New Project" button below.</p>
+        </div>
       </div>
       <settings v-if="selectedProject" :project="selectedProject" @hideSettings="hideSettings"/>
     </div>
@@ -63,5 +67,10 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+  }
+
+  .projects-empty {
+    text-align: center;
+    color: #b8b8b8;
   }
 </style>
