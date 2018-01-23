@@ -45,6 +45,8 @@
       },
 
       blurry() {
+        // Blurry every box and path except the one with
+        // an is-active class.
         this.$refs.visualDesigner.classList.add('blurry')
         this.selectedTarget.classList.add('is-active')
       },
@@ -55,6 +57,7 @@
       },
 
       dragMoved(el) {
+        // Redraw the path (or paths) when a box moves.
         this.pathBuilder.redraw(el)
       },
 
@@ -63,11 +66,15 @@
       },
 
       grabEnded() {
+        // Update the scroll coordinates so the minimap can pick
+        // them up and react accordingly.
         this.dimensions.scrollLeft = this.$refs.visualDesigner.scrollLeft
         this.dimensions.scrollTop = this.$refs.visualDesigner.scrollTop
       },
 
       extendScrollArea(boxes) {
+        // X of the rightmost box and Y of the box at the
+        // very bottom.
         let last = {
           x: maxProperty(boxes, 'offsetLeft'),
           y: maxProperty(boxes, 'offsetTop')
@@ -76,6 +83,7 @@
           width: this.$refs.visualDesigner.offsetWidth,
           height: this.$refs.visualDesigner.offsetHeight
         }
+        // Space to add or remove from the scroll area.
         let extra = {
           width: last.x + canvas.width * 0.75,
           height: last.y + canvas.height * 0.75
@@ -90,6 +98,7 @@
     mounted() {
       this.pathBuilder = new PathBuilder(this.layoutManager)
 
+      // Used by the minimap.
       this.dimensions = {
         width: this.$refs.visualDesigner.offsetWidth,
         height: this.$refs.visualDesigner.offsetHeight,

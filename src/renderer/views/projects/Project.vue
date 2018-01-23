@@ -31,7 +31,9 @@
       <h3 class="project-name">{{ name }}</h3>
       <p class="project-path">{{ path }}</p>
     </div>
-    <a href="#" class="project-settings" @click.prevent="settingsClicked"><img src="../../assets/images/icon-settings.svg" width="13" height="13"></a>
+    <a href="#" class="project-settings" @click.prevent="settingsClicked">
+      <img src="../../assets/images/icon-settings.svg" width="13" height="13">
+    </a>
   </router-link>
 </template>
 

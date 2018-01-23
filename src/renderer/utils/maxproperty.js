@@ -5,6 +5,8 @@ export default function maxProperty(array, property) {
     return 0
   }
 
+  // Sort the array in ascending order, so the last
+  // element is the highest.
   items.sort((a, b) => {
     return a[property] - b[property]
   })
