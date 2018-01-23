@@ -1,10 +1,10 @@
 import Designer from './views/designer/Designer'
-import Projects from './views/projects/Projects'
+import ProjectsContainer from './views/projects/ProjectsContainer'
 
 export default [
   {
     path: '/',
-    component: Projects
+    component: ProjectsContainer
   },
   {
     path: '/designer',

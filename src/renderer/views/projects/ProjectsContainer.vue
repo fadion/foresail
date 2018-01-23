@@ -6,7 +6,7 @@
   import Settings from './Settings'
 
   export default {
-    name: 'projects',
+    name: 'projects-container',
 
     data() {
       return {
