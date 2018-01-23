@@ -2,7 +2,7 @@
   import {mapState} from 'vuex'
   import * as types from '../../store/types'
   import PathBuilder from '../../services/PathBuilder'
-  import Position from '../../utils/position'
+  import maxProperty from '../../utils/maxproperty'
   import Box from './Box'
   import Settings from './Settings'
   import Minimap from './Minimap'
@@ -15,7 +15,7 @@
         showSettings: false,
         selectedBox: null,
         selectedTarget: null,
-        dimensions: { width: 0, height: 0, scrollLeft: 0, scrollTop: 0},
+        dimensions: { width: 0, height: 0, scrollLeft: 0, scrollTop: 0 },
         pathBuilder: null
       }
     },
@@ -69,29 +69,21 @@
 
       extendScrollArea(boxes) {
         let last = {
-          x: Position.max(boxes, 'offsetLeft'),
-          y: Position.max(boxes, 'offsetTop')
+          x: maxProperty(boxes, 'offsetLeft'),
+          y: maxProperty(boxes, 'offsetTop')
         }
         let canvas = {
           width: this.$refs.visualDesigner.offsetWidth,
           height: this.$refs.visualDesigner.offsetHeight
-        }
-        let max = {
-          x: this.$refs.visualInner.offsetWidth - canvas.width / 2,
-          y: this.$refs.visualInner.offsetHeight - canvas.height / 2
         }
         let extra = {
           width: last.x + canvas.width * 0.75,
           height: last.y + canvas.height * 0.75
         }
 
-        if (last.x > max.x) {
-          this.$refs.visualInner.style.width = `${extra.width}px`
-        }
-
-        if (last.y > max.y) {
-          this.$refs.visualInner.style.height = `${extra.height}px`
-        }
+        // @todo when the working space is shrinked, there's a scroll gitch.
+        this.$refs.visualInner.style.width = `${extra.width}px`
+        this.$refs.visualInner.style.height = `${extra.height}px`
       }
     },
 
@@ -181,8 +173,6 @@
       }
     }
 
-    // Arbitrary width and height to give the
-    // user more workspace.
     .visualDesigner-inner {
       pointer-events: none;
 

@@ -16,7 +16,7 @@
 
 <template>
   <div class="designerContainer">
-    <navigation title="Event Lab" back="Projects" back-url="/projects"/>
+    <navigation title="Event Lab" back="Projects" back-url="/" :editable="true"/>
 
     <div class="designer">
       <image-collection/>
@@ -35,5 +35,6 @@
   .designer {
     height: 100%;
     display: flex;
+    overflow: hidden;
   }
 </style>

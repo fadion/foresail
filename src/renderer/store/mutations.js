@@ -11,16 +11,38 @@ export default {
     })
   },
 
-  [types.UPDATE_BOX_POSITION](state, payload) {
-    for (let box of state.boxes) {
-      if (box.id === payload.id) {
-        box.x = payload.pos.x
-        box.y = payload.pos.y
+  [types.UPDATE_BOX_POSITION](state, box) {
+    for (let b of state.boxes) {
+      if (b.id === box.id) {
+        b.x = box.pos.x
+        b.y = box.pos.y
       }
     }
   },
 
-  [types.RECEIVE_DEFAULT_BOXES](state, payload) {
-    state.defaultBoxes = payload.boxes
+  [types.RECEIVE_DEFAULT_BOXES](state, boxes) {
+    state.defaultBoxes = boxes
+  },
+
+  [types.RECEIVE_PROJECTS](state, projects) {
+    state.projects = projects
+  },
+
+  [types.UPDATE_PROJECT](state, project) {
+    for (let p of state.projects) {
+      if (p.id === project.id) {
+        p.name = project.name
+        p.color = project.color
+      }
+    }
+  },
+
+  [types.ADD_NOTIFICATION](state, notification) {
+    notification.id = Math.random()
+    state.notifications.push(notification)
+  },
+
+  [types.DELETE_NOTIFICATION](state, notification) {
+    state.notifications.splice(state.notifications.indexOf(notification), 1)
   }
 }

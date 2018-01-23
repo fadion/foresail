@@ -30,7 +30,7 @@
 </script>
 
 <template>
-  <div class="imageBox" :class="{ 'imageBox--withSpots': hasSpots }" :style="'border-top-color:' + color">
+  <div class="imageBox" :class="{ 'imageBox--withSpots': hasSpots }" :style="{ 'border-top-color': color }">
     <div class="imageBox-info">
       <img :src="imagePath" class="imageBox-logo">
       <span class="imageBox-version">{{ version }}</span>
@@ -88,7 +88,6 @@
   .imageBox-info,
   .imageBox-version {
     pointer-events: none;
-    user-select: none;
   }
 
   // The spots are placed at the extremities, centered

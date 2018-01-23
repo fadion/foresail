@@ -3,11 +3,11 @@ import Projects from './views/projects/Projects'
 
 export default [
   {
-    path: '/projects',
+    path: '/',
     component: Projects
   },
   {
-    path: '/',
+    path: '/designer',
     component: Designer
   },
 ]

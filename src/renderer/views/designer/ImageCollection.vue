@@ -68,7 +68,7 @@
     },
 
     created() {
-      this.$store.dispatch('getAllDefaultBoxes')
+      this.$store.dispatch(types.ALL_DEFAULT_BOXES)
     },
 
     components: { Box }
@@ -142,7 +142,6 @@
     text-decoration: none;
     color: #aaa;
 
-    // Vue transition classes.
     &-enter-active, &-leave-active {
       transition: transform .2s, opacity .3s;
     }

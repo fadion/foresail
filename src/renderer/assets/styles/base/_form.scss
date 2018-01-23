@@ -118,3 +118,45 @@
     color: white;
   }
 }
+
+.form-color {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 30px;
+  background: #c2c2c2;
+  position: relative;
+  padding: 0;
+  margin: 0;
+
+  &::after {
+    content: '✔';
+    position: absolute;
+    right: -20px;
+    top: 4px;
+    color: white;
+    font-size: 16px;
+    opacity: 0;
+    transition: right .2s, opacity .2s;
+  }
+
+  &:focus:checked:not(:disabled)::after,
+  &:checked::after {
+    right: 10px;
+    opacity: 1;
+  }
+}
+
+.form-colorPicker {
+  display: block;
+  width: 100%;
+  height: 30px;
+  background: -webkit-linear-gradient(left,
+      #EC5353 0%,
+      #E9E955 17%,
+      #41EE41 33%,
+      #00FFFF 50%,
+      #5757EC 67%,
+      #EC4DEC 83%,
+      #EC5353 100%
+  )
+}

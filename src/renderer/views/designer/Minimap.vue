@@ -1,6 +1,6 @@
 <script>
   import {mapState} from 'vuex'
-  import Position from '../../utils/position'
+  import maxProperty from '../../utils/maxproperty'
 
   export default {
     name: 'minimap',
@@ -101,8 +101,8 @@
 
       defineScale() {
         this.scale = {
-          width: Position.max(this.boxes, 'x') + this.baseBox.width,
-          height: Position.max(this.boxes, 'y') + this.baseBox.height
+          width: maxProperty(this.boxes, 'x') + this.baseBox.width,
+          height: maxProperty(this.boxes, 'y') + this.baseBox.height
         }
       }
     }

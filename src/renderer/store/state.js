@@ -1,4 +1,6 @@
 export default {
   boxes: [],
-  defaultBoxes: []
+  defaultBoxes: [],
+  projects: [],
+  notifications: []
 }
