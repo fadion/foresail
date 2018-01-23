@@ -61,8 +61,8 @@
       </div>
 
       <div class="form-buttons u-mt30">
-        <button class="form-button form-button--save" @click.left="saveClicked">Save</button>
-        <button class="form-button form-button--cancel" @click.left="cancelClicked">Cancel</button>
+        <button class="form-button button button--save" @click.left="saveClicked">Save</button>
+        <button class="form-button button button--cancel" @click.left="cancelClicked">Cancel</button>
       </div>
     </div>
   </transition>

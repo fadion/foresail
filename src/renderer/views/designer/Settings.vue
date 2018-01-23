@@ -45,11 +45,11 @@
       </div>
 
       <div class="form-buttons u-mt30">
-        <button class="form-button form-button--save">Save</button>
-        <button class="form-button form-button--cancel" @click.left="cancelClicked">Cancel</button>
+        <button class="form-button button button--save">Save</button>
+        <button class="form-button button button--cancel" @click.left="cancelClicked">Cancel</button>
       </div>
 
-      <button class="form-button form-button--destroy u-100width u-mt100" @click.left="destroyClicked">Destroy Image</button>
+      <button class="form-button button button--destroy u-100width u-mt100" @click.left="destroyClicked">Destroy Image</button>
     </div>
   </transition>
 </template>

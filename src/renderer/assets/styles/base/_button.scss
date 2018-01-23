@@ -1,0 +1,26 @@
+.button {
+  display: inline-block;
+  font-size: 16px;
+  border: 0;
+  text-align: center;
+  padding: 12px 30px;
+  text-decoration: none;
+  color: white;
+
+  &--new {
+    background: #6b81ee;
+  }
+
+  &--save {
+    background: #6bee8e;
+  }
+
+  &--cancel {
+    background: #dbdbdb;
+    color: #acacac;
+  }
+
+  &--destroy {
+    background: #e15d5d;
+  }
+}
