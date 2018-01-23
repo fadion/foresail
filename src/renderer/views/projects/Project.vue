@@ -52,6 +52,7 @@
     align-items: center;
     text-decoration: none;
     cursor: default;
+    text-align: left;
   }
 
   .project-name {

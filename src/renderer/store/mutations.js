@@ -28,6 +28,10 @@ export default {
     state.projects = projects
   },
 
+  [types.ADD_PROJECT](state, project) {
+    state.projects.push(project)
+  },
+
   [types.UPDATE_PROJECT](state, project) {
     for (let p of state.projects) {
       if (p.id === project.id) {
