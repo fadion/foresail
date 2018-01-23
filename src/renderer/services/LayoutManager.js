@@ -12,6 +12,14 @@ export default class LayoutManager {
     this.boxes.push(box)
   }
 
+  removeBox(box) {
+    for (let path of this.boxPaths(box)) {
+      this.removePath(path)
+    }
+
+    this.boxes.splice(this.boxes.indexOf(box), 1)
+  }
+
   addPath(startBox, endBox, startSpot, endSpot, path) {
     if (!this._boxExists(startBox) || !this._boxExists(endBox)
       || this._boxesAreConnected(startBox, endBox)

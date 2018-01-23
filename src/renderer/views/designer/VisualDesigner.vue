@@ -41,6 +41,8 @@
 
       deleteBox() {
         this.$store.commit(types.DELETE_BOX, { id: this.selectedBox.id })
+        this.pathBuilder.remove(this.selectedTarget)
+        this.layoutManager.removeBox(this.selectedTarget)
         this.hideSettings()
       },
 

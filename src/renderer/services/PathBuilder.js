@@ -135,6 +135,12 @@ export default class PathBuilder {
     }
   }
 
+  remove(box) {
+    for (let current of this.layoutManager.boxPaths(box)) {
+      current.path.remove()
+    }
+  }
+
   _drawPath(path, start, end) {
     let p = {
       sx: start.x,
