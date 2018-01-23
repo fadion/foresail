@@ -139,16 +139,18 @@
 <template>
   <div class="visualDesigner" ref="visualDesigner" v-grabbable="{ onEnd: grabEnded }" @mousewheel.prevent>
     <div class="visualDesigner-inner" ref="visualInner"></div>
-    <box v-for="item in boxes" v-draggable="{ constraint: true, onMove: dragMoved, onEnd: dragEnded }"
-         :data-id="item.id"
-         :has-spots="true"
-         :logo="item.logo"
-         :version="item.version"
-         :color="item.color"
-         :key="item.id"
-         :style="{ top: `${item.y}px`, left: `${item.x}px` }"
-         @dblclick.left.native="boxClicked(item, $event)"
-    />
+    <transition-group name="visualDesignerBox" tag="div">
+      <box v-for="item in boxes" v-draggable="{ constraint: true, onMove: dragMoved, onEnd: dragEnded }"
+           :data-id="item.id"
+           :has-spots="true"
+           :logo="item.logo"
+           :version="item.version"
+           :color="item.color"
+           :key="item.id"
+           :style="{ top: `${item.y}px`, left: `${item.x}px` }"
+           @dblclick.left.native="boxClicked(item, $event)"
+      />
+    </transition-group>
     <minimap :container="dimensions"/>
     <settings v-if="showSettings" @hideSettings="hideSettings" @deleteBox="deleteBox"/>
   </div>
@@ -184,30 +186,39 @@
       }
     }
 
-    .visualDesigner-inner {
-      pointer-events: none;
-
-      // The svg element is rendered to fill the whole
-      // container, so that paths can be easily placed
-      // without complicated calculations.
-      svg {
-        top: 0;
-        left: 0;
-        min-height: 100%;
-        min-width: 100%;
-        pointer-events: none;
-      }
-
-      path {
-        stroke-width: 2;
-        stroke: #d0d7e4;
-        stroke-linecap: round;
-        fill: none;
-      }
-    }
-
     &.is-grabbing {
       cursor: -webkit-grabbing;
+    }
+
+    &Box-leave-active {
+      transition: transform .6s, opacity .3s !important;
+    }
+
+    &Box-leave-to {
+      transform: scale(.3);
+      opacity: 0;
+    }
+  }
+
+  .visualDesigner-inner {
+    pointer-events: none;
+
+    // The svg element is rendered to fill the whole
+    // container, so that paths can be easily placed
+    // without complicated calculations.
+    svg {
+      top: 0;
+      left: 0;
+      min-height: 100%;
+      min-width: 100%;
+      pointer-events: none;
+    }
+
+    path {
+      stroke-width: 2;
+      stroke: #d0d7e4;
+      stroke-linecap: round;
+      fill: none;
     }
   }
 </style>
