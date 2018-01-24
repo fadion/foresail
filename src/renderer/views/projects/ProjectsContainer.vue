@@ -52,7 +52,7 @@
   <div class="projectsContainer">
     <navigation title="Projects"/>
     <div class="projects" ref="projects">
-      <div class="projects-inner">
+      <transition-group name="projects-inner" tag="div" class="projects-inner">
         <project v-for="(project, index) in projects"
                  :key="project.id"
                  :name="project.name"
@@ -61,10 +61,10 @@
                  ref="project"
                  @openSettings="openSettings(project, $refs.project[index].$el)"
         />
-        <div class="projects-empty" v-if="!projects.length">
-          <p>No project added yet.</p>
-          <p>Start building one now by clicking the "New Project" button below.</p>
-        </div>
+      </transition-group>
+      <div class="projects-empty" v-if="!projects.length">
+        <p>No project added yet.</p>
+        <p>Start building one now by clicking the "New Project" button below.</p>
       </div>
       <new-project/>
     </div>
@@ -99,6 +99,14 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+
+    &-enter-active, &-leave-active {
+      transition: opacity .7s !important;
+    }
+
+    &-enter, &-leave-to {
+      opacity: 0;
+    }
   }
 
   .projects-empty {
