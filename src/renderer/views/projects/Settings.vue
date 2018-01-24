@@ -26,6 +26,10 @@
     methods: {
       saveClicked() {
         this.$store.commit(types.UPDATE_PROJECT, this.newProject)
+        this.$store.commit(types.ADD_NOTIFICATION, {
+          type: 'success',
+          message: 'The project was updated successfully.'
+        })
         this.$emit('hideSettings')
       },
 
