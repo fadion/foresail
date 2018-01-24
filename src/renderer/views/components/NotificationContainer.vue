@@ -28,14 +28,12 @@
 </script>
 
 <template>
-  <div class="notifications">
-    <transition-group name="notifications" tag="div">
-      <notification v-for="notification in shownNotifications"
-                    :key="notification.id"
-                    :notification="notification"
-      />
-    </transition-group>
-  </div>
+  <transition-group name="notifications" tag="div" class="notifications">
+    <notification v-for="notification in shownNotifications"
+                  :key="notification.id"
+                  :notification="notification"
+    />
+  </transition-group>
 </template>
 
 <style lang="scss">

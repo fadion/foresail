@@ -18,7 +18,9 @@
 
 <template>
   <div class="application">
-    <router-view></router-view>
+    <transition name="router">
+      <router-view></router-view>
+    </transition>
     <notification-container/>
     <spinner v-if="spinner"/>
   </div>
@@ -34,6 +36,25 @@
       position: fixed;
       bottom: 20px;
       right: 20px;
+    }
+  }
+
+  .router {
+    &-enter-active {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      transition: opacity .6s;
+    }
+
+    &-leave-active {
+      transition: opacity .3s;
+    }
+
+    &-enter, &-leave-to {
+      opacity: 0;
     }
   }
 
