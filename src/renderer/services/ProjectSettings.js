@@ -6,14 +6,35 @@ export default class ProjectSettings {
   constructor(baseDir) {
     this.baseDir = baseDir
     this.dir = path.join(this.baseDir, config.directory)
-    this.file = path.join(this.dir, config.settingsFile)
+    this.configFile = path.join(this.dir, config.settingsFile)
   }
 
-  exists() {
-    return fs.existsSync(this.dir)
+  projectExists() {
+    return this._pathExists(this.dir)
   }
 
-  async write() {
+  async readConfig() {
+    if (!this._pathExists(this.configFile)) {
+      throw new Error('Project configuration file doesn\'t exist.')
+    }
+
+    let data = await this._readFile(this.configFile)
+    let object
+
+    try {
+      object = JSON.parse(data)
+    } catch (err) {
+      throw new Error('Project configuration file is malformed.')
+    }
+
+    if (!object.name || !object.path || !object.color) {
+      throw new Error('Project configuration file is malformed.')
+    }
+
+    return object
+  }
+
+  async init() {
     let data = {
       name: path.basename(this.baseDir),
       path: this.baseDir,
@@ -21,14 +42,27 @@ export default class ProjectSettings {
     }
 
     await this._createDirectory(this.dir)
-    await this._writeFile(data)
+    await this._writeFile(this.configFile, data)
 
     return data
   }
 
-  _writeFile(data) {
+  _pathExists(path) {
+    return fs.existsSync(path)
+  }
+
+  _readFile(file) {
     return new Promise((resolve, reject) => {
-      fs.writeFile(this.file, JSON.stringify(data), err => {
+      fs.readFile(file, (err, data) => {
+        if (err) reject(err)
+        else resolve(data)
+      })
+    })
+  }
+
+  _writeFile(file, data) {
+    return new Promise((resolve, reject) => {
+      fs.writeFile(file, JSON.stringify(data), err => {
         if (err) reject(err)
         else resolve(data)
       })

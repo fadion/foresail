@@ -29,6 +29,7 @@ export default {
   },
 
   [types.ADD_PROJECT](state, project) {
+    project.id = Math.random()
     state.projects.push(project)
   },
 
