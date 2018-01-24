@@ -35,6 +35,17 @@
 
       cancelClicked() {
         this.$emit('hideSettings')
+      },
+
+      removeClicked() {
+        this.$store.commit(types.DELETE_PROJECT, this.project)
+        this.$store.commit(types.ADD_NOTIFICATION, {
+          type: 'success',
+          sticky: true,
+          message: 'The project was removed, but the Foresail configuration is still ' +
+          'saved in the directory. You can restore the project at anytime.'
+        })
+        this.$emit('hideSettings')
       }
     }
   }
@@ -66,6 +77,8 @@
         <button class="form-button button button--save" @click.left="saveClicked">Save</button>
         <button class="form-button button button--cancel" @click.left="cancelClicked">Cancel</button>
       </div>
+
+      <button class="form-button button button--destroy u-100width u-mt100" @click.left="removeClicked">Remove Project</button>
     </div>
   </transition>
 </template>

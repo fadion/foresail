@@ -42,6 +42,10 @@ export default {
     }
   },
 
+  [types.DELETE_PROJECT](state, project) {
+    state.projects.splice(state.projects.indexOf(project), 1)
+  },
+
   [types.ADD_NOTIFICATION](state, notification) {
     notification.id = Math.random()
     state.notifications.push(notification)
