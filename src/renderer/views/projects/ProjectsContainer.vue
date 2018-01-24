@@ -1,10 +1,10 @@
 <script>
   import {mapState} from 'vuex'
   import * as types from '../../store/types'
-  import ProjectSettings from '../../services/ProjectSettings'
   import Navigation from '../components/Navigation'
   import Project from './Project'
   import Settings from './Settings'
+  import NewProject from './NewProject'
 
   export default {
     name: 'projects-container',
@@ -37,29 +37,6 @@
 
         this.selectedProject = null
         this.selectedTarget = null
-      },
-
-      newProject() {
-        this.$electron.remote.dialog.showOpenDialog(
-          this.$electron.remote.getCurrentWindow(),
-          {
-            properties: ['openDirectory', 'showHiddenFiles', 'createDirectory', 'treatPackageAsDirectory']
-          },
-          paths => {
-            if (!paths) return
-
-            const ps = new ProjectSettings(paths[0])
-            ps.write()
-              .then(data => {
-                this.$store.commit(types.ADD_PROJECT, data)
-              })
-              .catch(() => {
-                this.$store.commit(types.ADD_NOTIFICATION, {
-                  message: 'Couldn\'t write to project directory. Make sure you have the correct permissions.'
-                })
-              })
-          }
-        )
       }
     },
 
@@ -67,7 +44,7 @@
       this.$store.dispatch(types.ALL_PROJECTS)
     },
 
-    components: { Settings, Navigation, Project }
+    components: { Settings, Navigation, Project, NewProject }
   }
 </script>
 
@@ -89,7 +66,7 @@
           <p>Start building one now by clicking the "New Project" button below.</p>
         </div>
       </div>
-      <a href="#" class="projects-new button button--new" @click.left.prevent="newProject">New Project</a>
+      <new-project/>
     </div>
     <settings v-if="selectedProject" :project="selectedProject" @hideSettings="hideSettings"/>
   </div>
@@ -99,7 +76,7 @@
   .projects {
     text-align: center;
 
-    .project, .projects-new {
+    .project, .newProject {
       transition: filter .3s, opacity .3s, box-shadow 1s;
     }
 
@@ -108,7 +85,7 @@
     }
 
     &.blurry {
-      .project:not(.is-active), .projects-new {
+      .project:not(.is-active), .newProject {
         filter: grayscale(.8) blur(1px);
         opacity: .8;
         pointer-events: none;
@@ -127,9 +104,5 @@
   .projects-empty {
     text-align: center;
     color: #b8b8b8;
-  }
-
-  .projects-new {
-    margin-top: 60px;
   }
 </style>
