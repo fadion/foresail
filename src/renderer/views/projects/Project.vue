@@ -1,4 +1,6 @@
 <script>
+  import truncatePath from '../../utils/truncatepath'
+
   export default {
     name: 'project',
 
@@ -17,6 +19,16 @@
       }
     },
 
+    computed: {
+      shortPath() {
+        return truncatePath(this.path)
+      },
+
+      pathOrEmpty() {
+        return this.path.length > this.shortPath.length ? this.path : ''
+      }
+    },
+
     methods: {
       settingsClicked() {
         this.$emit('openSettings')
@@ -29,7 +41,7 @@
   <router-link class="project" to="/designer" :style="{ 'border-left-color': color }">
     <div class="project-info">
       <h3 class="project-name">{{ name }}</h3>
-      <p class="project-path">{{ path }}</p>
+      <p class="project-path" :title="pathOrEmpty">{{ shortPath }}</p>
     </div>
     <a href="#" class="project-settings" @click.prevent="settingsClicked">
       <img src="../../assets/images/icon-settings.svg" width="13" height="13">

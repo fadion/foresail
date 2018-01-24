@@ -34,7 +34,7 @@ export default class ProjectSettings {
     })
   }
 
-  async _createDirectory(dir) {
+  _createDirectory(dir) {
     return new Promise((resolve, reject) => {
       fs.mkdir(dir, err => {
         if (err) reject(err)
