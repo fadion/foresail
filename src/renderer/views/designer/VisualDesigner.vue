@@ -172,7 +172,7 @@
       // applied programmatically to the selected box.
       .imageBox:not(.is-active), svg {
         filter: grayscale(.8) blur(1px);
-        opacity: .8;
+        opacity: .6;
         pointer-events: none;
       }
     }

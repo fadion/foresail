@@ -19,30 +19,30 @@
     <div class="boxSettings">
       <h2>Nginx Configuration</h2>
 
-      <div class="form-section form-section--inline form-section--separator">
-        <label class="form-label">Port</label>
+      <label class="form-section form-section--inline form-section--separator">
+        <span class="form-label">Port</span>
         <input type="text" class="form-control form-text form-control--small" value="80">
-      </div>
-      <div class="form-section form-section--separator">
-        <label class="form-label">Domain</label>
+      </label>
+      <label class="form-section form-section--separator">
+        <span class="form-label">Domain</span>
         <input type="text" class="form-control form-text form-control--full" placeholder="www.domain.com">
-      </div>
-      <div class="form-section form-section--separator">
-        <label class="form-label">Document Root</label>
+      </label>
+      <label class="form-section form-section--separator">
+        <span class="form-label">Document Root</span>
         <input type="text" class="form-control form-text form-control--full" value="www">
-      </div>
-      <div class="form-section form-section--inline form-section--separator">
-        <label class="form-label">Force www</label>
+      </label>
+      <label class="form-section form-section--inline form-section--separator">
+        <span class="form-label">Force www</span>
         <input type="checkbox" class="form-control form-checkbox" checked>
-      </div>
-      <div class="form-section form-section--inline form-section--separator">
-        <label class="form-label">Use SSL</label>
+      </label>
+      <label class="form-section form-section--inline form-section--separator">
+        <span class="form-label">Use SSL</span>
         <input type="checkbox" class="form-control form-checkbox">
-      </div>
-      <div class="form-section form-section--inline form-section--separator">
-        <label class="form-label">Enable gzip</label>
+      </label>
+      <label class="form-section form-section--inline form-section--separator">
+        <span class="form-label">Enable gzip</span>
         <input type="checkbox" class="form-control form-checkbox" checked>
-      </div>
+      </label>
 
       <div class="form-buttons u-mt30">
         <button class="form-button button button--save">Save</button>

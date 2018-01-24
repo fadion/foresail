@@ -1,4 +1,6 @@
 .form-section {
+  display: block;
+
   &--inline {
     display: flex;
     justify-content: space-between;
@@ -18,8 +20,9 @@
 
 .form-label {
   display: inline-block;
-  margin-bottom: 10px;
-  color: #8b8b8b;
+  margin-bottom: 5px;
+  color: #aaa;
+  font-size: 14px;
 }
 
 .form-control {

@@ -45,13 +45,13 @@
     <div class="projectSettings">
       <h2>{{ project.name }}</h2>
 
-      <div class="form-section form-section--separator">
-        <label class="form-label">Name</label>
+      <label class="form-section form-section--separator">
+        <span class="form-label">Name</span>
         <input type="text" class="form-control form-text form-control--full" v-model="newProject.name">
-      </div>
+      </label>
 
-      <div class="form-section form-section--separator u-posRelative">
-        <label class="form-label">Color</label>
+      <label class="form-section form-section--separator">
+        <span class="form-label">Color</span>
         <div class="projectSettings-colors">
           <div>
             <input type="radio" v-for="color in colors.first" class="form-color" name="color" :value="color" :style="{ background: color }" v-model="newProject.color">
@@ -60,7 +60,7 @@
             <input type="radio" v-for="color in colors.second" class="form-color" name="color" :value="color" :style="{ background: color }" v-model="newProject.color">
           </div>
         </div>
-      </div>
+      </label>
 
       <div class="form-buttons u-mt30">
         <button class="form-button button button--save" @click.left="saveClicked">Save</button>

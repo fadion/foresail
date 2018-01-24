@@ -87,8 +87,12 @@
     &.blurry {
       .project:not(.is-active), .newProject {
         filter: grayscale(.8) blur(1px);
-        opacity: .8;
+        opacity: .6;
         pointer-events: none;
+      }
+
+      .newProject {
+        opacity: .1;
       }
     }
   }
