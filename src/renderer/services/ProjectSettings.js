@@ -1,5 +1,5 @@
-import fs from 'fs'
 import path from 'path'
+import Filesystem from './Filesystem'
 import config from '../config'
 
 export default class ProjectSettings {
@@ -10,15 +10,15 @@ export default class ProjectSettings {
   }
 
   projectExists() {
-    return this._pathExists(this.dir)
+    return Filesystem.pathExists(this.dir)
   }
 
   async readConfig() {
-    if (!this._pathExists(this.configFile)) {
+    if (!Filesystem.pathExists(this.configFile)) {
       throw new Error('Project configuration file doesn\'t exist.')
     }
 
-    let data = await this._readFile(this.configFile)
+    let data = await Filesystem.readFile(this.configFile)
     let object
 
     try {
@@ -41,40 +41,9 @@ export default class ProjectSettings {
       color: config.colors[Math.floor(Math.random() * config.colors.length)]
     }
 
-    await this._createDirectory(this.dir)
-    await this._writeFile(this.configFile, data)
+    await Filesystem.createDirectory(this.dir)
+    await Filesystem.writeFile(this.configFile, data)
 
     return data
-  }
-
-  _pathExists(path) {
-    return fs.existsSync(path)
-  }
-
-  _readFile(file) {
-    return new Promise((resolve, reject) => {
-      fs.readFile(file, (err, data) => {
-        if (err) reject(err)
-        else resolve(data)
-      })
-    })
-  }
-
-  _writeFile(file, data) {
-    return new Promise((resolve, reject) => {
-      fs.writeFile(file, JSON.stringify(data), err => {
-        if (err) reject(err)
-        else resolve(data)
-      })
-    })
-  }
-
-  _createDirectory(dir) {
-    return new Promise((resolve, reject) => {
-      fs.mkdir(dir, err => {
-        if (err) reject(err)
-        else resolve(dir)
-      })
-    })
   }
 }
