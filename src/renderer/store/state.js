@@ -3,5 +3,5 @@ export default {
   defaultBoxes: [],
   projects: [],
   notifications: [],
-  spinner: true
+  spinner: false
 }
