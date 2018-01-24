@@ -2,5 +2,6 @@ export default {
   boxes: [],
   defaultBoxes: [],
   projects: [],
-  notifications: []
+  notifications: [],
+  spinner: true
 }

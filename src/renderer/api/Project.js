@@ -35,6 +35,6 @@ export default class Project {
       ]
 
       callback(projects)
-    }, 100)
+    }, 500)
   }
 }

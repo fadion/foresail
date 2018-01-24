@@ -48,5 +48,13 @@ export default {
 
   [types.DELETE_NOTIFICATION](state, notification) {
     state.notifications.splice(state.notifications.indexOf(notification), 1)
+  },
+
+  [types.SHOW_SPINNER](state) {
+    state.spinner = true
+  },
+
+  [types.HIDE_SPINNER](state) {
+    state.spinner = false
   }
 }
