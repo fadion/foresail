@@ -179,7 +179,7 @@
 
     .imageBox {
       position: absolute;
-      transition: filter .3s, box-shadow 1s;
+      transition: filter .3s, opacity .3s, box-shadow 1s;
 
       &.is-active {
         box-shadow: 0 0 40px rgba(0, 0, 0, .15);

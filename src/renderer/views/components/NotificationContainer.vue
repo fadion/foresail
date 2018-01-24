@@ -43,7 +43,7 @@
     position: fixed;
     bottom: 20px;
     right: 20px;
-    max-width: 450px;
+    width: 400px;
 
     &-enter-active, &-leave-active {
       transition: transform .4s, opacity .4s;

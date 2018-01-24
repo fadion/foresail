@@ -11,7 +11,8 @@
 
     data() {
       return {
-        selectedProject: null
+        selectedProject: null,
+        selectedTarget: null
       }
     },
 
@@ -22,12 +23,20 @@
     },
 
     methods: {
-      openSettings(project) {
+      openSettings(project, el) {
         this.selectedProject = project
+        this.selectedTarget = el
+
+        this.$refs.projects.classList.add('blurry')
+        this.selectedTarget.classList.add('is-active')
       },
 
       hideSettings() {
+        this.$refs.projects.classList.remove('blurry')
+        this.selectedTarget.classList.remove('is-active')
+
         this.selectedProject = null
+        this.selectedTarget = null
       },
 
       newProject() {
@@ -65,14 +74,15 @@
 <template>
   <div class="projectsContainer">
     <navigation title="Projects"/>
-    <div class="projects">
+    <div class="projects" ref="projects">
       <div class="projects-inner">
-        <project v-for="project in projects"
+        <project v-for="(project, index) in projects"
                  :key="project.id"
                  :name="project.name"
                  :path="project.path"
                  :color="project.color"
-                 @openSettings="openSettings(project)"
+                 ref="project"
+                 @openSettings="openSettings(project, $refs.project[index].$el)"
         />
         <div class="projects-empty" v-if="!projects.length">
           <p>No project added yet.</p>
@@ -88,6 +98,22 @@
 <style lang="scss">
   .projects {
     text-align: center;
+
+    .project, .projects-new {
+      transition: filter .3s, opacity .3s, box-shadow 1s;
+    }
+
+    .project.is-active {
+      box-shadow: 0 0 40px rgba(0, 0, 0, .15);
+    }
+
+    &.blurry {
+      .project:not(.is-active), .projects-new {
+        filter: grayscale(.8) blur(1px);
+        opacity: .8;
+        pointer-events: none;
+      }
+    }
   }
 
   .projects-inner {
