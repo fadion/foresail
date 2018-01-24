@@ -1,11 +1,12 @@
 import fs from 'fs'
 import path from 'path'
+import config from '../config'
 
 export default class ProjectSettings {
   constructor(baseDir) {
     this.baseDir = baseDir
-    this.dir = path.join(this.baseDir, '.foresail')
-    this.file = path.join(this.dir, 'project.json')
+    this.dir = path.join(this.baseDir, config.directory)
+    this.file = path.join(this.dir, config.settingsFile)
   }
 
   exists() {
@@ -14,9 +15,9 @@ export default class ProjectSettings {
 
   async write() {
     let data = {
-      name: 'test',
+      name: path.basename(this.baseDir),
       path: this.baseDir,
-      color: '#E97B7B'
+      color: config.colors[Math.floor(Math.random() * config.colors.length)]
     }
 
     await this._createDirectory(this.dir)

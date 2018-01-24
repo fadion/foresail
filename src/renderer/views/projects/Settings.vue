@@ -1,12 +1,18 @@
 <script>
   import * as types from '../../store/types'
+  import config from '../../config'
 
   export default {
     name: 'settings',
 
     data() {
       return {
-        newProject: Object.assign({}, this.project)
+        newProject: Object.assign({}, this.project),
+        // Divide the colors into two colums.
+        colors: {
+          first: config.colors.slice(0, Math.round(config.colors.length / 2)),
+          second: config.colors.slice(Math.round(config.colors.length / 2))
+        }
       }
     },
 
@@ -44,18 +50,10 @@
         <label class="form-label">Color</label>
         <div class="projectSettings-colors">
           <div>
-            <input type="radio" class="form-color" name="color" value="#49AEE2" style="background: #49aee2;" v-model="newProject.color">
-            <input type="radio" class="form-color" name="color" value="#A56FE3" style="background: #a56fe3;" v-model="newProject.color">
-            <input type="radio" class="form-color" name="color" value="#EB4CF6" style="background: #eb4cf6;" v-model="newProject.color">
-            <input type="radio" class="form-color" name="color" value="#D2A460" style="background: #d2a460;" v-model="newProject.color">
-            <input type="radio" class="form-color" name="color" value="#E97B7B" style="background: #e97b7b;" v-model="newProject.color">
+            <input type="radio" v-for="color in colors.first" class="form-color" name="color" :value="color" :style="{ background: color }" v-model="newProject.color">
           </div>
           <div>
-            <input type="radio" class="form-color" name="color" value="#49E296" style="background: #49e296;" v-model="newProject.color">
-            <input type="radio" class="form-color" name="color" value="#40E5E5" style="background: #40e5e5;" v-model="newProject.color">
-            <input type="radio" class="form-color" name="color" value="#FFCE5D" style="background: #ffce5d;" v-model="newProject.color">
-            <input type="radio" class="form-color" name="color" value="#FBF168" style="background: #fbf168;" v-model="newProject.color">
-            <input type="radio" class="form-color" name="color" value="#B1B1B1" style="background: #b1b1b1;" v-model="newProject.color">
+            <input type="radio" v-for="color in colors.second" class="form-color" name="color" :value="color" :style="{ background: color }" v-model="newProject.color">
           </div>
         </div>
       </div>
