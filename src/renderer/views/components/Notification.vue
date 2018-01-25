@@ -57,7 +57,10 @@
 </script>
 
 <template>
-  <div class="notification" :class="`notification--${notification.type || 'error' }`" @click="remove">
+  <div class="notification"
+       :class="[`notification--${notification.type || 'error' }`, { 'notification--sticky': notification.sticky }]"
+       @click="remove"
+  >
     <p class="notification-message">
       {{ notification.message }}
       <a href="#" class="notification-retry" ref="reply" v-if="notification.retry" @click.prevent.stop="retry">Retry</a>
@@ -74,6 +77,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative;
     cursor: pointer;
 
     &::before {
@@ -113,6 +117,14 @@
       &::before {
         content: ':)';
       }
+    }
+
+    &--sticky::after {
+      content: "×";
+      position: absolute;
+      top: 5px;
+      right: 8px;
+      opacity: .5;
     }
 
     &:not(:last-child) {
