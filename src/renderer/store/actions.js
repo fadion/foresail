@@ -1,5 +1,4 @@
 import axios from 'axios'
-import Project from '../api/Project'
 import * as types from './types'
 
 export default {
@@ -24,15 +23,6 @@ export default {
 
           reject(error)
         })
-    })
-  },
-
-  [types.ALL_PROJECTS](context) {
-    context.commit(types.SHOW_SPINNER)
-
-    new Project().getAll(projects => {
-      context.commit(types.RECEIVE_PROJECTS, projects)
-      context.commit(types.HIDE_SPINNER)
     })
   }
 }

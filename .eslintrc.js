@@ -38,6 +38,7 @@ module.exports = {
     "no-restricted-syntax": 0,
     "object-curly-spacing": 0,
     "no-trailing-spaces": 0,
+    "no-empty": 0,
     "max-len": [
       "error",
       { "code": 120 }

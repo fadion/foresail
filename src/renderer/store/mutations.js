@@ -24,10 +24,6 @@ export default {
     state.defaultBoxes = boxes
   },
 
-  [types.RECEIVE_PROJECTS](state, projects) {
-    state.projects = projects
-  },
-
   [types.ADD_PROJECT](state, project) {
     project.id = Math.random()
     state.projects.push(project)

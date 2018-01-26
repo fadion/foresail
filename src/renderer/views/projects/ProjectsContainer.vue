@@ -1,6 +1,5 @@
 <script>
   import {mapState} from 'vuex'
-  import * as types from '../../store/types'
   import Navigation from '../components/Navigation'
   import Project from './Project'
   import Settings from './Settings'
@@ -38,10 +37,6 @@
         this.selectedProject = null
         this.selectedTarget = null
       }
-    },
-
-    created() {
-      this.$store.dispatch(types.ALL_PROJECTS)
     },
 
     components: { Settings, Navigation, Project, NewProject }

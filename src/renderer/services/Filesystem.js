@@ -7,7 +7,7 @@ export default class Filesystem {
 
   static readFile(file) {
     return new Promise((resolve, reject) => {
-      fs.readFile(file, (err, data) => {
+      fs.readFile(file, 'utf8', (err, data) => {
         if (err) reject(err)
         else resolve(data)
       })
@@ -16,7 +16,7 @@ export default class Filesystem {
 
   static writeFile(file, data) {
     return new Promise((resolve, reject) => {
-      fs.writeFile(file, JSON.stringify(data), err => {
+      fs.writeFile(file, JSON.stringify(data), 'utf8', err => {
         if (err) reject(err)
         else resolve(data)
       })

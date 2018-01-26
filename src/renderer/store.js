@@ -1,9 +1,11 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import electron from 'electron'
 import state from './store/state'
 import getters from './store/getters'
 import mutations from './store/mutations'
 import actions from './store/actions'
+import VuexPersist from './plugins/vuexpersist'
 
 Vue.use(Vuex)
 
@@ -12,5 +14,14 @@ export default new Vuex.Store({
   getters,
   mutations,
   actions,
-  strict: process.env.NODE_ENV !== 'production'
+  plugins: [new VuexPersist({
+    path: electron.remote.app.getPath('userData'),
+    reducer: (state) => {
+      return {
+        defaultBoxes: state.defaultBoxes,
+        projects: state.projects,
+      }
+    }
+  }).subscribe()],
+  strict: true
 })
