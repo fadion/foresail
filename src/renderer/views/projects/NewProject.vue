@@ -42,7 +42,7 @@
                 })
                 .catch(err => {
                   this.$store.commit(types.ADD_NOTIFICATION, {
-                    message: err
+                    message: err.message
                   })
                 })
             } else {

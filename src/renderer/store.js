@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import electron from 'electron'
+import VuexPersist from 'vuex-persistfile'
 import state from './store/state'
 import getters from './store/getters'
 import mutations from './store/mutations'
 import actions from './store/actions'
-import VuexPersist from './plugins/vuexpersist'
 
 Vue.use(Vuex)
 
