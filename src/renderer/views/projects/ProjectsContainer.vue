@@ -99,11 +99,15 @@
     flex-wrap: wrap;
     justify-content: center;
 
-    &-enter-active, &-leave-active {
+    &-enter-active {
       transition: opacity .7s !important;
     }
 
-    &-enter, &-leave-to {
+    &-leave-active {
+      transition: opacity 0s !important;
+    }
+
+    &-enter {
       opacity: 0;
     }
   }
