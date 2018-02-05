@@ -1,4 +1,5 @@
 import path from 'path'
+import Joi from 'joi'
 import Filesystem from './Filesystem'
 import config from '../config'
 
@@ -23,11 +24,8 @@ export default class ProjectSettings {
 
     try {
       object = JSON.parse(data)
+      this._validate(object)
     } catch (err) {
-      throw new Error('Project configuration file is malformed.')
-    }
-
-    if (!object.name || !object.path || !object.color) {
       throw new Error('Project configuration file is malformed.')
     }
 
@@ -45,5 +43,17 @@ export default class ProjectSettings {
     await Filesystem.writeFile(this.configFile, data)
 
     return data
+  }
+
+  _validate(object) {
+    let result = Joi.validate(object, Joi.object().keys({
+      name: Joi.string().required(),
+      path: Joi.string().required(),
+      color: Joi.string().required()
+    }))
+
+    if (result.error) {
+      throw new Error('Config file is invalid.')
+    }
   }
 }
